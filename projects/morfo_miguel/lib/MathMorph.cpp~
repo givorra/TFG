@@ -1,0 +1,159 @@
+#include "MathMorph.h"
+#include <pcl/features/normal_3d.h>
+#include <pcl/common/distances.h>
+
+MathMorph::MathMorph(double sizei, double leafSizei)
+{
+    size=sizei;
+    leafSize=leafSizei;
+}
+
+pcl::PointCloud<pcl::PointXYZ>::Ptr 
+MathMorph::dilate2 (pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ptr) 
+{
+    pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
+    pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_out (new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointXYZ point;
+    float mx=0.0, my=0.0, mz=0.0;
+
+    // Calculate centroid
+    for (int i=0; i<cloud_ptr->size(); i++) {
+        mx += cloud_ptr->points[i].x;
+        my += cloud_ptr->points[i].y;
+        mz += cloud_ptr->points[i].z;
+    }
+    mx /=cloud_ptr->size();
+    my /=cloud_ptr->size();
+    mz /=cloud_ptr->size();
+
+    // Compute normals
+    ne.setViewPoint (mx, my, mz);
+    ne.setInputCloud (cloud_ptr);
+    ne.setSearchMethod (tree);
+    ne.setRadiusSearch (0.03);
+    ne.compute (*cloud_normals);
+
+
+    // Dilate the figure
+    for (int i=0; i<cloud_ptr->size(); i++) {
+        pcl::PointXYZ point;
+        point.x=cloud_ptr->points[i].x - size*cloud_normals->points[i].normal[0];
+        point.y=cloud_ptr->points[i].y - size*cloud_normals->points[i].normal[1];
+        point.z=cloud_ptr->points[i].z - size*cloud_normals->points[i].normal[2];
+        cloud_out->points.push_back(point);
+    }
+    return cloud_out;
+}
+
+bool
+MathMorph::isInRange (pcl::PointXYZ point, pcl::PointXYZ searchPoint) {
+    return (fabs(point.x-searchPoint.x)<=leafSize/2 && fabs(point.y-searchPoint.y)<=leafSize/2 && fabs(point.z-searchPoint.z)<=leafSize/2);
+}
+
+
+pcl::PointCloud<pcl::T>::Ptr 
+MathMorph::dilate (pcl::PointCloud<pcl::T>::Ptr cloud_ptr)
+
+pcl::PointCloud<pcl::PointXYZ>::Ptr 
+MathMorph::dilate (pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ptr) 
+{
+    pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
+    pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_out (new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::KdTreeFLANN<pcl::PointXYZ> kdtree;
+    pcl::PointXYZ point, minPt, maxPt, searchPoint;
+    double mx=0.0, my=0.0, mz=0.0, cosine;
+    int xRange, yRange, zRange, cont=0, cont2=0;
+    bool found;
+    std::vector<int> pointIdxRadiusSearch;
+    std::vector<float> pointRadiusSquaredDistance;
+    Eigen::Vector4f p, q;
+
+    // Calculate centroid. This is made because normals must be calculated from inside the object. With 
+    // a RGBD camera, it is not necessary
+    // TODO: with pcl methods
+    for (int i=0; i<cloud_ptr->size(); i++) {
+        mx += cloud_ptr->points[i].x;
+        my += cloud_ptr->points[i].y;
+        mz += cloud_ptr->points[i].z;
+    }
+    mx /=cloud_ptr->size();
+    my /=cloud_ptr->size();
+    mz /=cloud_ptr->size();
+
+    // Compute normals
+    ne.setViewPoint (mx, my, mz);
+    ne.setInputCloud (cloud_ptr);
+    ne.setSearchMethod (tree);
+    ne.setRadiusSearch (0.005);
+    ne.compute (*cloud_normals);
+
+    // Calculate the bounding box (the size of the structured element is added)
+    pcl::getMinMax3D (*cloud_ptr, minPt, maxPt);
+    xRange = (maxPt.x+2*size-minPt.x)/leafSize;
+    yRange = (maxPt.y+2*size-minPt.y)/leafSize;
+    zRange = (maxPt.z+2*size-minPt.z)/leafSize;
+
+    kdtree.setInputCloud (cloud_ptr);
+
+    for (int x=0; x<=xRange; x++) {
+        // Beginning with the lowest X and the leafside/2 is necessary to center the point in the voxel
+        searchPoint.x=x*leafSize+(minPt.x-size)+leafSize/2;
+        for (int y=0; y<=yRange+1; y++) {
+            searchPoint.y=y*leafSize+(minPt.y-size)+leafSize/2; 
+            for (int z=0; z<=zRange+1; z++) { 
+                searchPoint.z=z*leafSize+(minPt.z-size)+leafSize/2; 
+                if (kdtree.radiusSearch (searchPoint, size+2*leafSize, pointIdxRadiusSearch, pointRadiusSquaredDistance) > 0) {
+                    for (int i = 0; i < pointIdxRadiusSearch.size(); i++) {
+                        pcl::PointXYZ point;
+                        point.x=cloud_ptr->points[pointIdxRadiusSearch[i]].x - size*cloud_normals->points[pointIdxRadiusSearch[i]].normal[0];
+                        point.y=cloud_ptr->points[pointIdxRadiusSearch[i]].y - size*cloud_normals->points[pointIdxRadiusSearch[i]].normal[1];
+                        point.z=cloud_ptr->points[pointIdxRadiusSearch[i]].z - size*cloud_normals->points[pointIdxRadiusSearch[i]].normal[2];
+                        if (isInRange(point, searchPoint)) {
+                            found=false;
+                            cont2++;
+                            for (int j=0; j<pointIdxRadiusSearch.size(); j++) {
+                                if (j==i) continue;
+                                p = cloud_normals->points[pointIdxRadiusSearch[j]].getNormalVector4fMap (); 
+                                q = cloud_normals->points[pointIdxRadiusSearch[i]].getNormalVector4fMap (); 
+                                cosine = p.dot(q);
+                                if (cosine<0) { 
+                                    cont++; 
+                                    //cout << "cosine=" << cosine << " " <<p << endl << " " << q << endl;
+                                    
+                                }
+                            }
+                            if (!found) {
+                                point.x=searchPoint.x;
+                                point.y=searchPoint.y;
+                                point.z=searchPoint.z;
+                                cloud_out->points.push_back(point);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    cerr << cont << " " << cont2 <<endl;
+    return cloud_out;
+}
+
+pcl::PointCloud<pcl::Normal>::Ptr
+MathMorph::findNormals (pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_ptr) 
+{
+    pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> ne;
+    pcl::PointCloud<pcl::Normal>::Ptr cloud_normals (new pcl::PointCloud<pcl::Normal>);
+    pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ> ());
+
+    // Compute normals
+    ne.setInputCloud (cloud_ptr);
+    ne.setSearchMethod (tree);
+    ne.setRadiusSearch (0.03);
+    ne.compute (*cloud_normals);
+    return cloud_normals;
+}
