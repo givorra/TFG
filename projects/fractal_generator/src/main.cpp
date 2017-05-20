@@ -30,18 +30,29 @@ string numberToString(int number)
 // main recibe por parámetro el número de iteraciones que realizará el algoritmo
 int main(int argc, char *argv[])
 {
-	if(argc == 2)
+	if(argc == 3)
 	{
-		string siterations = string(argv[1]);
+		string metodo = string(argv[1]);
+		string siterations = string(argv[2]);
 		int iterations = atoi(siterations.c_str());
-		POINT_CLOUD::Ptr sierpinski_cloud(new POINT_CLOUD());	
-		pcl::PolygonMesh sierpinski_mesh;
 
-		//sierpinskiTetrahedronMesh(iterations, sierpinski_mesh);
-		//sierpinskiTetrahedronCloud(iterations, sierpinski_cloud);
-		sierpinskiPyramid(iterations, sierpinski_cloud);
-
-		 
+		if(metodo == "tetra_pm")
+		{
+			pcl::PolygonMesh sierpinski_mesh;
+			sierpinskiTetrahedronMesh(iterations, sierpinski_mesh);
+		}
+		else if(metodo == "tetra_pc")
+		{
+			POINT_CLOUD::Ptr sierpinski_cloud(new POINT_CLOUD());	
+			sierpinskiTetrahedronCloud(iterations, sierpinski_cloud);
+		}
+		else if(metodo == "pyra_pc")
+		{
+			POINT_CLOUD::Ptr sierpinski_cloud(new POINT_CLOUD());	
+			sierpinskiPyramid(iterations, sierpinski_cloud);
+		}
+		else
+			infoParms();
 	}
 	else
 		infoParms();
@@ -583,7 +594,9 @@ void sierpinskiPyramid(int iterations, POINT_CLOUD::Ptr sierpinski_set)
 
 void infoParms()
 {
-	cerr << "ERROR: Debe indicar un solo parámetro que sea el número de iteraciones\n";
+	cerr << "ERROR: Debe introducir dos parámetros:\n";
+	cerr << " - Parámetro 1: Método de generación [tetra_pm], [tetra_pc], [pyra_pc]\n";
+	cerr << " - Parámetro 2: Iteraciones a realizar por el método especificado\n";
 }
 
 void savePointCloud(const string& filename, POINT_CLOUD::Ptr cloud)
