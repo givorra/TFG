@@ -332,7 +332,7 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
     #endif
 
     // Obtenemos el resultado para leafsize desde 0 hasta el maximo tamaño de la figura/nube
-	xy_pts = computeBoxCounting(iterations, maxSize * 0.01, maxSize * 0.4, cloud_ptr);
+	xy_pts = computeBoxCounting(iterations, maxSize * 0.01, maxSize, cloud_ptr);
 
     //leafSize = maxSize/iterations;
     float m, b, r;
@@ -438,9 +438,10 @@ std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float f
       	cout << "#  - leafSize = " << leafSize << "\n";
       	cout << "#  - increment = " << increment << "\n";
     #endif
-
+    leafSize = last_leafSize;
     for(int i = 0; i < iterations; i++)							// Itera incrementando el leafsize
     {
+		leafSize += last_leafSize/(i+2);							// Incremento del leaf size
 		cloud_filtered->clear();
 
 		sor.setLeafSize(leafSize, leafSize, leafSize);		// Leaf size en x, y, z 	*NOTA: Posibilidad de rectangulos y no cuadrados, sería factible?
@@ -449,7 +450,6 @@ std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float f
 		//if(xy_pts.size() == 0 || cloud_filtered->size() != xy_pts[xy_pts.size()-1].second)
 			xy_pts.push_back(std::make_pair(leafSize, cloud_filtered->size()));
 
-		leafSize += increment;							// Incremento del leaf size
 	}
 	#if DEBUG_MODE == 1
       	cout << "#  - xy_pts.size = " << xy_pts.size() << "\n";
