@@ -343,11 +343,11 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
     std::vector<std::pair<float, float> > xy_pts_ransac;
     int ransac_iterations = 40;
     float ransac_maxThresold = errorLinearRegression(xy_log_pts, m, b) * 1.5 / xy_log_pts.size();
-    int ransac_nMinInliers = xy_pts.size() * 0.75;
+    int ransac_nMinInliers = xy_pts.size() * 0.50;
 
 
-	xy_pts_ransac = computeRansac(xy_log_pts, ransac_iterations, ransac_maxThresold, ransac_nMinInliers);
-	plotXYgraph(fresults + "_ransac", xy_pts_ransac);
+	//xy_pts_ransac = computeRansac(xy_log_pts, ransac_iterations, ransac_maxThresold, ransac_nMinInliers);
+	//plotXYgraph(fresults + "_ransac", xy_pts_ransac);
 
 	//plotXYgraph(fresults + "_xy_pts", xy_pts);
 	//xy_log_pts = getLogLogVector(xy_pts);
@@ -410,9 +410,8 @@ std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float f
 	MY_POINT_CLOUD::Ptr cloud_filtered(new MY_POINT_CLOUD());	// Point Cloud donde se almacena la nube filtrada en cada iteracion
 	pcl::VoxelGrid<MY_POINT_TYPE> sor;							// Filtro que realiza el box counting
 	sor.setInputCloud(cloud_ptr);								// Set de la nube sobre la que se aplica el filtro
-	float leafSize, first_leafSizePrueba;
+	float leafSize;
 
-	first_leafSizePrueba = first_leafSize;
 	float meanNN = meanNearestNeighbors(cloud_ptr) * 2;
 	if(first_leafSize < meanNN)
 	{
@@ -431,17 +430,19 @@ std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float f
     	cout << "##########################################################\n";
       	cout << "# computeBoxCounting parms:\n";
       	cout << "#  - iterations = " << iterations << "\n";
-      	cout << "#  - first_leafSize1 = " << first_leafSizePrueba << "\n";
       	cout << "#  - first_leafSize2 = " << first_leafSize << "\n";
       	cout << "#  - meanNN = " << meanNN << "\n";
       	cout << "#  - last_leafSize = " << last_leafSize << "\n";
       	cout << "#  - leafSize = " << leafSize << "\n";
       	cout << "#  - increment = " << increment << "\n";
     #endif
-    leafSize = last_leafSize;
-    for(int i = 0; i < iterations; i++)							// Itera incrementando el leafsize
+
+	leafSize = first_leafSize;
+
+    for(int i = 0; i < iterations && leafSize >= meanNN; i++)							// Itera incrementando el leafsize
     {
-		leafSize += last_leafSize/(i+2);							// Incremento del leaf size
+
+		leafSize = last_leafSize/(i+2);	// Para que divida entre 2, 3, 4, 5, 6, ...,  iterations
 		cloud_filtered->clear();
 
 		sor.setLeafSize(leafSize, leafSize, leafSize);		// Leaf size en x, y, z 	*NOTA: Posibilidad de rectangulos y no cuadrados, sería factible?
@@ -449,7 +450,7 @@ std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float f
 
 		//if(xy_pts.size() == 0 || cloud_filtered->size() != xy_pts[xy_pts.size()-1].second)
 			xy_pts.push_back(std::make_pair(leafSize, cloud_filtered->size()));
-
+						// Incremento del leaf size
 	}
 	#if DEBUG_MODE == 1
       	cout << "#  - xy_pts.size = " << xy_pts.size() << "\n";
