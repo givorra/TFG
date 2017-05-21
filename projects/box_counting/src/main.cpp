@@ -346,8 +346,8 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
     int ransac_nMinInliers = xy_pts.size() * 0.75;
 
 
-	xy_pts_ransac = computeRansac(xy_log_pts, ransac_iterations, ransac_maxThresold, ransac_nMinInliers);
-	plotXYgraph(fresults + "_ransac", xy_pts_ransac);
+	//xy_pts_ransac = computeRansac(xy_log_pts, ransac_iterations, ransac_maxThresold, ransac_nMinInliers);
+	//plotXYgraph(fresults + "_ransac", xy_pts_ransac);
 
 	//plotXYgraph(fresults + "_xy_pts", xy_pts);
 	//xy_log_pts = getLogLogVector(xy_pts);
