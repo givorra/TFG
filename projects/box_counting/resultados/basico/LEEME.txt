@@ -1,0 +1,8 @@
+Estos son los resultados del box counting con:
+- Minimo tamaño de voxel 	0
+- Maximo tamaño de voxel	tamaño maximo del bounding box
+- Iteraciones			100
+- Variación del tamaño 		
+	- Se calcula un incremento dividiendo el tamaño maximo del voxel entre el numero de iteraciones
+	- Se inicializa leafSize a 0
+	- Al principio de cada iteracion se realiza el incremento del leafSize con el incremento calculado
