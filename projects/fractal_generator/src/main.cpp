@@ -1049,7 +1049,7 @@ void sierpinskiTetrahedronCloudSinEscalar(int iterations, POINT_CLOUD::Ptr sierp
 			sierpinski_set->points.push_back(sierpinski_set_t->points[j]);
 		}
 
-      	if(ply_writer.write("../models/sierpinski_tetra_pc_sin_escalar/sierpinski_pyramid_" + numberToString(i) + ".ply", *sierpinski_set, false, false) < 0)
+      	if(ply_writer.write("../models/sierpinski_tetra_pc_sin_escalar/sierpinski_tetra_" + numberToString(i) + ".ply", *sierpinski_set, false, false) < 0)
       		cerr << "Error writing .ply file" << std::endl;
 
 #if debug == 1
