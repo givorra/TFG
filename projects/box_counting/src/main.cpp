@@ -20,7 +20,7 @@ using namespace std;
 // Se define aqui el tipo de punto y PC de ese tipo para poder cambiarlo en cualquier momento
 #define MY_POINT_TYPE pcl::PointXYZ						
 #define MY_POINT_CLOUD pcl::PointCloud<MY_POINT_TYPE>
-#define DEBUG_MODE 1
+#define DEBUG_MODE 0
 
 // <HEADERS>
 
@@ -226,7 +226,7 @@ std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCount
 				{
 					std::vector<std::pair<float, float> > xy_log_pts = getLogLogVector(dir_results[i].second);
 					linearRegression(xy_log_pts, m, b, r);
-					f << dir_results[i].first << " " << m << "\n";
+					f << dir_results[i].first << " D = " << m << ", error = " << r << "\n";
 				}
 				f.close();
 			}
@@ -339,11 +339,12 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
 
 	xy_log_pts = getLogLogVector(xy_pts);
 	linearRegression(xy_log_pts, m, b, r);
+	plotXYgraph(fresults + "_normal", xy_log_pts); 
 
-    std::vector<std::pair<float, float> > xy_pts_ransac;
-    int ransac_iterations = 40;
-    float ransac_maxThresold = errorLinearRegression(xy_log_pts, m, b) * 1.5 / xy_log_pts.size();
-    int ransac_nMinInliers = xy_pts.size() * 0.75;
+    //std::vector<std::pair<float, float> > xy_pts_ransac;
+    //int ransac_iterations = 40;
+    //float ransac_maxThresold = errorLinearRegression(xy_log_pts, m, b) * 1.5 / xy_log_pts.size();
+    //int ransac_nMinInliers = xy_pts.size() * 0.75;
 
 
 	//xy_pts_ransac = computeRansac(xy_log_pts, ransac_iterations, ransac_maxThresold, ransac_nMinInliers);
@@ -351,7 +352,6 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
 
 	//plotXYgraph(fresults + "_xy_pts", xy_pts);
 	//xy_log_pts = getLogLogVector(xy_pts);
-	plotXYgraph(fresults + "_normal", xy_log_pts); 
 	//saveResults(fresults, xy_pts);	
 	//xy_pts_best_set = getBestPointsSet(xy_pts);
 	//xy_log_pts = getLogLogVector(xy_pts_best_set);

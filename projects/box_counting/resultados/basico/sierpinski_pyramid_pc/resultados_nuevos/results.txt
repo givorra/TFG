@@ -1,8 +1,0 @@
-../models/sierpinski_pyramid_pc/sierpinski_pyramid_1.ply 0
-../models/sierpinski_pyramid_pc/sierpinski_pyramid_2.ply 1.70954
-../models/sierpinski_pyramid_pc/sierpinski_pyramid_3.ply 1.79686
-../models/sierpinski_pyramid_pc/sierpinski_pyramid_4.ply 1.95134
-../models/sierpinski_pyramid_pc/sierpinski_pyramid_5.ply 2.10201
-../models/sierpinski_pyramid_pc/sierpinski_pyramid_6.ply 2.20561
-../models/sierpinski_pyramid_pc/sierpinski_pyramid_7.ply 2.29524
-../models/sierpinski_pyramid_pc/sierpinski_pyramid_8.ply 2.30968
