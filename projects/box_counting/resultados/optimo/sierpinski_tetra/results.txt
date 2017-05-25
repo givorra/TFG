@@ -1,0 +1,9 @@
+../models/sierpinski_tetra_pm/sierpinski_mesh_1.ply 1.20255
+../models/sierpinski_tetra_pm/sierpinski_mesh_2.ply 1.7307
+../models/sierpinski_tetra_pm/sierpinski_mesh_3.ply 2.08811
+../models/sierpinski_tetra_pm/sierpinski_mesh_4.ply 2.02763
+../models/sierpinski_tetra_pm/sierpinski_mesh_5.ply 2.04136
+../models/sierpinski_tetra_pm/sierpinski_mesh_6.ply 2.0514
+../models/sierpinski_tetra_pm/sierpinski_mesh_7.ply 2.05672
+../models/sierpinski_tetra_pm/sierpinski_mesh_8.ply 2.06524
+../models/sierpinski_tetra_pm/sierpinski_mesh_9.ply 2.07137

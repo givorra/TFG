@@ -1,0 +1,8 @@
+../models/bottles/bottle_0001.off_sampled.pcd 2.31958
+../models/bottles/bottle_0002.off_sampled.pcd 2.34457
+../models/bottles/bottle_0003.off_sampled.pcd 2.32955
+../models/bottles/bottle_0004.off_sampled.pcd 2.3921
+../models/bottles/bottle_0006.off_sampled.pcd 2.30948
+../models/bottles/bottle_0007.off_sampled.pcd 2.22046
+../models/bottles/bottle_0008.off_sampled.pcd 2.32412
+../models/bottles/bottle_0009.off_sampled.pcd 2.32017
