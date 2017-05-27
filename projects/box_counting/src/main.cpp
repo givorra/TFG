@@ -332,7 +332,7 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
     #endif
 
     // Obtenemos el resultado para leafsize desde 0 hasta el maximo tamaño de la figura/nube
-	xy_pts = computeBoxCounting(iterations, 0, maxSize, cloud_ptr);
+	xy_pts = computeBoxCounting(iterations, 0, maxSize/2, cloud_ptr);
 
     //leafSize = maxSize/iterations;
     float m, b, r;
