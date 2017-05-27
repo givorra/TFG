@@ -33,6 +33,7 @@ std::vector<std::pair<float, float> > boxCountingFile(const string& ply_file);
 std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, string fresults);
 //void plotXYgraphDir(string filename, std::vector<std::pair<std::vector<std::pair<float, float> >, string > > xy_pts);
 void plotXYgraph(string filename, std::vector<std::pair<float, float> > xy_pts);
+void plotXYgraphPoints(string filename, std::vector<std::pair<float, float> > xy_pts);
 void plotLinearRegression(string filename, std::vector<std::pair<float, float> > xy_pts, const float& m, const float& b);
 string numberToString(int number);
 int linearRegression(std::vector<std::pair<float, float> > xy_pts, float& m, float& b, float& r);
@@ -340,6 +341,7 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
 	xy_log_pts = getLogLogVector(xy_pts);
 	linearRegression(xy_log_pts, m, b, r);
 	plotXYgraph(fresults + "_normal", xy_log_pts); 
+	plotXYgraphPoints(fresults + "_xy_pts", xy_pts); 
 
 	// RANSAC
 	/*
@@ -353,7 +355,7 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
 	*/
 	//plotXYgraph(fresults + "_xy_pts", xy_pts);
 	//xy_log_pts = getLogLogVector(xy_pts);
-	//saveResults(fresults, xy_pts);	
+	saveResults(fresults, xy_pts);	
 	//xy_pts_best_set = getBestPointsSet(xy_pts);
 	//xy_log_pts = getLogLogVector(xy_pts_best_set);
 	//plotXYgraph(fresults + "_best_set", xy_log_pts);
@@ -467,7 +469,7 @@ void saveResults(string fresults, const std::vector<std::pair<float, float> > &x
   	{  		
 	    for(int i = 0; i < iterations; i++)
 	    {
-	      	f << xy_pts[i].first << ";" << xy_pts[i].second << ";" << log(xy_pts[i].first) << ";" << log(xy_pts[i].second)  << "\n";
+	      	f << xy_pts[i].first << ";" << xy_pts[i].second << /*";" << log(xy_pts[i].first) << ";" << log(xy_pts[i].second)  <<*/ "\n";
 	    }
 	    f.close();
 	}
@@ -518,6 +520,39 @@ void plotXYgraph(string filename, std::vector<std::pair<float, float> > xy_pts)
 	gp << "fit f(x)" << gp.file1d(xy_pts) << " via m,b\n";
 	gp << "title_f(m,b) = sprintf('f(x) = %.2fx + %.2f', m, b)\n";
 	gp << "plot" << gp.file1d(xy_pts) << "with points title 'P', f(x) title title_f(m,b)\n";
+
+	//cout << "title_f(a,b) = sprintf('f(x) = %2fx + %.2f', a, b)\n";
+}
+
+void plotXYgraphPoints(string filename, std::vector<std::pair<float, float> > xy_pts)
+{
+	/*
+	xy_pts.clear();
+	xy_pts.push_back(std::make_pair(1, 1));
+	xy_pts.push_back(std::make_pair(1, 2));
+	xy_pts.push_back(std::make_pair(2, 2));
+	xy_pts.push_back(std::make_pair(3, 3));
+	xy_pts.push_back(std::make_pair(4, 4));
+	xy_pts.push_back(std::make_pair(5, 5));
+	xy_pts.push_back(std::make_pair(6, 6));
+	xy_pts.push_back(std::make_pair(7, 7));
+	xy_pts.push_back(std::make_pair(8, 8));
+	xy_pts.push_back(std::make_pair(2, 1));
+	*/
+	Gnuplot gp;
+	string format = "png";
+
+	gp << "set terminal " << format << "\n";
+	gp << "set fit quiet\n";
+	gp << "set title '" << getFileNameFromPath(filename) << "'\n";
+
+	filename = filename + "." + format;
+	
+	gp << "set output '"<< filename << "'\n";
+	gp << "set grid\n";
+	gp << "set xlabel 'Leaf Size'\n";
+	gp << "set ylabel 'Number of voxels'\n";
+	gp << "plot" << gp.file1d(xy_pts) << "with points title 'P'\n";
 
 	//cout << "title_f(a,b) = sprintf('f(x) = %2fx + %.2f', a, b)\n";
 }
