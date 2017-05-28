@@ -1,0 +1,13 @@
+../models/terrenos_fbm/terreno_0.5.ply D =2.11198 error = 9.48058
+../models/terrenos_fbm/terreno_0.6.ply D =2.07757 error = 9.32687
+../models/terrenos_fbm/terreno_0.7.ply D =2.05248 error = 9.85804
+../models/terrenos_fbm/terreno_0.8.ply D =2.03031 error = 9.49511
+../models/terrenos_fbm/terreno_0.9.ply D =2.00758 error = 9.28789
+../models/terrenos_fbm/terreno_1.0.ply D =1.99248 error = 9.54523
+../models/terrenos_fbm/terreno_1.1.ply D =1.98058 error = 10.0285
+../models/terrenos_fbm/terreno_1.2.ply D =1.9698 error = 9.68255
+../models/terrenos_fbm/terreno_1.3.ply D =1.95667 error = 9.78061
+../models/terrenos_fbm/terreno_1.4.ply D =1.94439 error = 9.07688
+../models/terrenos_fbm/terreno_1.5.ply D =1.93466 error = 8.16256
+../models/terrenos_fbm/terreno_1.6.ply D =1.9247 error = 7.23326
+../models/terrenos_fbm/terreno_1.7.ply D =1.9128 error = 6.57019

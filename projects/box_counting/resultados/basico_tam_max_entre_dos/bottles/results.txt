@@ -1,0 +1,8 @@
+../models/bottles/bottle_0001.off_sampled.pcd D =2.35002 error = 19.4977
+../models/bottles/bottle_0002.off_sampled.pcd D =2.3028 error = 17.4781
+../models/bottles/bottle_0003.off_sampled.pcd D =2.35167 error = 19.8017
+../models/bottles/bottle_0004.off_sampled.pcd D =2.35528 error = 22.0763
+../models/bottles/bottle_0006.off_sampled.pcd D =2.35602 error = 18.8825
+../models/bottles/bottle_0007.off_sampled.pcd D =1.99546 error = 19.8068
+../models/bottles/bottle_0008.off_sampled.pcd D =2.21874 error = 24.2483
+../models/bottles/bottle_0009.off_sampled.pcd D =2.35083 error = 18.1131
