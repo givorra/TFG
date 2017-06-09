@@ -227,7 +227,7 @@ std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCount
 				{
 					std::vector<std::pair<float, float> > xy_log_pts = getLogLogVector(dir_results[i].second);
 					linearRegression(xy_log_pts, m, b, r);
-					f << dir_results[i].first << " D = " << m << ", error = " << meanErrorLinearRegression(xy_log_pts) << "\n";
+					f << dir_results[i].first << " D = " << m << ", error = " << meanErrorLinearRegression(xy_log_pts, m, b) << "\n";
 				}
 				f.close();
 			}
