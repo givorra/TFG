@@ -1,0 +1,9 @@
+../models/sierpinski_tetra_pm/sierpinski_mesh_1.ply D = 1.23864, error = 0.159056
+../models/sierpinski_tetra_pm/sierpinski_mesh_2.ply D = -0, error = 0.0385877
+../models/sierpinski_tetra_pm/sierpinski_mesh_3.ply D = 1.8141, error = 0.0524082
+../models/sierpinski_tetra_pm/sierpinski_mesh_4.ply D = 1.95744, error = 0.0514323
+../models/sierpinski_tetra_pm/sierpinski_mesh_5.ply D = 2.00737, error = 0.0458359
+../models/sierpinski_tetra_pm/sierpinski_mesh_6.ply D = 2.02324, error = 0.0470894
+../models/sierpinski_tetra_pm/sierpinski_mesh_7.ply D = 2.02901, error = 0.0484823
+../models/sierpinski_tetra_pm/sierpinski_mesh_8.ply D = 2.03363, error = 0.0492505
+../models/sierpinski_tetra_pm/sierpinski_mesh_9.ply D = 2.03589, error = 0.0472005

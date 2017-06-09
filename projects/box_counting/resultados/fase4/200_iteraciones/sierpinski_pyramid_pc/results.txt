@@ -1,0 +1,7 @@
+../models/sierpinski_pyramid_pc/sierpinski_pyramid_1.ply D = 0.479604, error = 9.22166
+../models/sierpinski_pyramid_pc/sierpinski_pyramid_2.ply D = 0.160714, error = 0.000238419
+../models/sierpinski_pyramid_pc/sierpinski_pyramid_3.ply D = 1.70025, error = 24.4398
+../models/sierpinski_pyramid_pc/sierpinski_pyramid_4.ply D = 2.05922, error = 21.5861
+../models/sierpinski_pyramid_pc/sierpinski_pyramid_5.ply D = 2.15937, error = 20.2071
+../models/sierpinski_pyramid_pc/sierpinski_pyramid_6.ply D = 2.21176, error = 19.3772
+../models/sierpinski_pyramid_pc/sierpinski_pyramid_7.ply D = 2.2424, error = 19.6112
