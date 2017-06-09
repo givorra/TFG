@@ -43,6 +43,7 @@ void saveResults(string fresults, const std::vector<std::pair<float, float> > &x
 std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float first_leafSize, float last_leafSize, MY_POINT_CLOUD::Ptr cloud_ptr);
 std::vector<std::pair<float, float> > getLogLogVector(std::vector<std::pair<float, float> > xy_pts);
 float errorLinearRegression(const std::vector<std::pair<float, float> > &xy_pts, const float &m, const float &b);
+float meanErrorLinearRegression(const std::vector<std::pair<float, float> > &xy_pts, const float &m, const float &b);
 std::vector<std::pair<float, float> > getBestPointsSet(std::vector<std::pair<float, float> > xy_pts);
 string getFileNameFromPath(string path);
 std::vector<std::pair<float, float> > deleteDuplicates(std::vector<std::pair<float, float> > xy_pts);
@@ -226,7 +227,7 @@ std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCount
 				{
 					std::vector<std::pair<float, float> > xy_log_pts = getLogLogVector(dir_results[i].second);
 					linearRegression(xy_log_pts, m, b, r);
-					f << dir_results[i].first << " D = " << m << ", error = " << r << "\n";
+					f << dir_results[i].first << " D = " << m << ", error = " << meanErrorLinearRegression(xy_log_pts) << "\n";
 				}
 				f.close();
 			}
@@ -726,6 +727,11 @@ std::vector<std::pair<float, float> > deleteDuplicates(std::vector<std::pair<flo
 	cout << "# Elementos duplicados eliminados = " << xy_pts.size() - xy_pts_out.size() << "\n";
 #endif
 	return xy_pts_out;
+}
+
+float meanErrorLinearRegression(const std::vector<std::pair<float, float> > &xy_pts, const float &m, const float &b)
+{
+	return errorLinearRegression(xy_pts, m, b) / xy_pts.size();
 }
 
 float errorLinearRegression(const std::vector<std::pair<float, float> > &xy_pts, const float &m, const float &b)
