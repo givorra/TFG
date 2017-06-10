@@ -605,7 +605,7 @@ void getBestRange(std::vector<std::pair<float, float> > xy_pts, int& best_range_
 	best_m = 0;
 	best_b = 0;
 	best_r = 0;
-	best_error = 9999999999;
+	best_error = std::numeric_limits<float>::max();
 #if DEBUG_MODE == 1
 	cout << "# GET BEST RANGE LINEAR REGRESSION\n";
 	cout << " - Número de muestras = " << n << "\n";
@@ -862,7 +862,7 @@ std::vector<std::pair<float, float> > computeRansac(std::vector<std::pair<float,
 			}
 
 			linearRegression(out_xy_pts, m, b, r);
-			error = errorLinearRegression(out_xy_pts, m, b) / out_xy_pts.size();
+			error = maenErrorLinearRegression(out_xy_pts, m, b);
 
 			if(out_xy_pts.size() >= nMinInliers && error < best_error)
 			{
