@@ -341,14 +341,15 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
 	linearRegression(xy_log_pts, m, b, r);
 	plotXYgraph(fresults + "_normal", xy_log_pts); 
 
-    //std::vector<std::pair<float, float> > xy_pts_ransac;
-    //int ransac_iterations = 40;
-    //float ransac_maxThresold = errorLinearRegression(xy_log_pts, m, b) * 1.5 / xy_log_pts.size();
-    //int ransac_nMinInliers = xy_pts.size() * 0.50;
+    std::vector<std::pair<float, float> > xy_pts_ransac;
+    int ransac_iterations = 40;
+    float ransac_maxThresold = errorLinearRegression(xy_log_pts, m, b) / xy_log_pts.size();
+    int ransac_nMinInliers = xy_pts.size() * 0.50;
 
 
-	//xy_pts_ransac = computeRansac(xy_log_pts, ransac_iterations, ransac_maxThresold, ransac_nMinInliers);
-	//plotXYgraph(fresults + "_ransac", xy_pts_ransac);
+	xy_pts_ransac = computeRansac(xy_log_pts, ransac_iterations, ransac_maxThresold, ransac_nMinInliers);
+	if(xy_pts_ransac.size() > 0)
+		plotXYgraph(fresults + "_ransac", xy_pts_ransac);
 
 	//plotXYgraph(fresults + "_xy_pts", xy_pts);
 	//xy_log_pts = getLogLogVector(xy_pts);
@@ -405,7 +406,7 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
 
 std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float first_leafSize, float last_leafSize, MY_POINT_CLOUD::Ptr cloud_ptr)
 {
-
+	int n1_fibonacci, n2_fibonacci;
 	std::vector<std::pair<float, float> > xy_pts;
 	MY_POINT_CLOUD::Ptr cloud_filtered(new MY_POINT_CLOUD());	// Point Cloud donde se almacena la nube filtrada en cada iteracion
 	pcl::VoxelGrid<MY_POINT_TYPE> sor;							// Filtro que realiza el box counting
@@ -424,7 +425,8 @@ std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float f
 	else
 		leafSize = first_leafSize;
 
-
+	n1_fibonacci = 1;
+	n2_fibonacci = 1;
 
 	#if DEBUG_MODE == 1
     	cout << "##########################################################\n";
@@ -439,10 +441,10 @@ std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float f
 
 	leafSize = first_leafSize;
 
-    for(int i = 0; i < iterations && leafSize >= meanNN; i++)							// Itera incrementando el leafsize
+    for(int i = 2; leafSize >= meanNN; i++)							// Itera incrementando el leafsize
     {
 
-		leafSize = last_leafSize/(i+2);	// Para que divida entre 2, 3, 4, 5, 6, ...,  iterations
+		leafSize = last_leafSize/i;	// Para que divida entre 2, 3, 4, 5, 6, ...,  iterations
 		cloud_filtered->clear();
 
 		sor.setLeafSize(leafSize, leafSize, leafSize);		// Leaf size en x, y, z 	*NOTA: Posibilidad de rectangulos y no cuadrados, sería factible?
@@ -859,7 +861,7 @@ std::vector<std::pair<float, float> > computeRansac(std::vector<std::pair<float,
 			linearRegression(out_xy_pts, m, b, r);
 			error = errorLinearRegression(out_xy_pts, m, b) / out_xy_pts.size();
 
-			if(out_xy_pts.size() >= nMinInliers && error < best_error)
+			if(out_xy_pts.size() >= nMinInliers && out_xy_pts.size() > best_xy_pts.size())
 			{
 				best_xy_pts = out_xy_pts;
 				best_error = error;
