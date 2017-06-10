@@ -862,7 +862,7 @@ std::vector<std::pair<float, float> > computeRansac(std::vector<std::pair<float,
 			}
 
 			linearRegression(out_xy_pts, m, b, r);
-			error = maenErrorLinearRegression(out_xy_pts, m, b);
+			error = meanErrorLinearRegression(out_xy_pts, m, b);
 
 			if(out_xy_pts.size() >= nMinInliers && error < best_error)
 			{
