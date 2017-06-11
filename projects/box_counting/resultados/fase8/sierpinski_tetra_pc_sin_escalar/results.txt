@@ -1,0 +1,7 @@
+../models/sierpinski_tetra_pc_sin_escalar/sierpinski_tetra_3.ply D = 1.76966, error = 0.060705
+../models/sierpinski_tetra_pc_sin_escalar/sierpinski_tetra_4.ply D = 1.89682, error = 0.054179
+../models/sierpinski_tetra_pc_sin_escalar/sierpinski_tetra_5.ply D = 1.986, error = 0.0444038
+../models/sierpinski_tetra_pc_sin_escalar/sierpinski_tetra_6.ply D = 2.00274, error = 0.0383749
+../models/sierpinski_tetra_pc_sin_escalar/sierpinski_tetra_7.ply D = 2.00385, error = 0.0376133
+../models/sierpinski_tetra_pc_sin_escalar/sierpinski_tetra_8.ply D = 2.0029, error = 0.0357251
+../models/sierpinski_tetra_pc_sin_escalar/sierpinski_tetra_9.ply D = 1.99932, error = 0.0332806
