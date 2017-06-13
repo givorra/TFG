@@ -425,7 +425,7 @@ std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float f
 	float meanNN = meanNearestNeighbors(cloud_ptr) * 2;
 	leafSize = std::numeric_limits<float>::max();
 
-    for(float i = 2; leafSize >= meanNN; i++)							// Itera incrementando el leafsize
+    for(float i = 2; leafSize >= meanNN; i += 0.5)							// Itera incrementando el leafsize
     {
 		cloud_filtered->clear();
 		leafSize = last_leafSize / i;
