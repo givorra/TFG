@@ -14,6 +14,7 @@
 #include <cmath>
 #include <boost/tuple/tuple.hpp>
 #include "gnuplot-iostream.h"
+#include <ctime>
 
 using namespace std;
 
@@ -190,6 +191,9 @@ bool checkPathExist(const string& path)
 std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCountingDirectory(const string& dir)
 {
 	std::vector<std::pair<string, std::vector<std::pair<float, float> > > > dir_results;
+	std::vector<float> times;
+	std::vector<int> npoints;
+	std::clock_t start;
 
 	if(checkPathExist(dir))
 	{
@@ -213,7 +217,14 @@ std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCount
 
 			while(!f.eof())
 			{
+				MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD());
+
+				loadPointCloud(ply_file, tmp);
+				npoints.push_back(tmp->points.size());
+
+				start = std::clock();
 				dir_results.push_back(std::make_pair(ply_file, boxCountingFile(ply_file)));
+				times.push_back((std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000));
 				//cout << "Procesado " << ply_file << "\n";
 				getline(f, ply_file);
 			}
@@ -227,7 +238,7 @@ std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCount
 				{
 					std::vector<std::pair<float, float> > xy_log_pts = getLogLogVector(dir_results[i].second);
 					linearRegression(xy_log_pts, m, b, r);
-					f << dir_results[i].first << " D = " << m << ", error = " << meanErrorLinearRegression(xy_log_pts, m, b) << "\n";
+					f << dir_results[i].first << " D = " << m << ", error = " << meanErrorLinearRegression(xy_log_pts, m, b) << ", time = " << times[i] << ";" << npoints[i] << "\n";
 				}
 				f.close();
 			}
