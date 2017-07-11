@@ -124,47 +124,6 @@
      <string>&lt;=</string>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="dilateSizeValue">
-    <property name="geometry">
-     <rect>
-      <x>640</x>
-      <y>660</y>
-      <width>66</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="decimals">
-     <number>4</number>
-    </property>
-    <property name="maximum">
-     <double>20.000000000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>0.010000000000000</double>
-    </property>
-    <property name="value">
-     <double>0.010000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelSize">
-    <property name="geometry">
-     <rect>
-      <x>560</x>
-      <y>660</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Dilate size:</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btnCaptureCloud">
     <property name="geometry">
      <rect>
@@ -213,47 +172,6 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QDoubleSpinBox" name="erodeSizeValue">
-    <property name="geometry">
-     <rect>
-      <x>820</x>
-      <y>670</y>
-      <width>66</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="decimals">
-     <number>4</number>
-    </property>
-    <property name="maximum">
-     <double>20.000000000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>0.010000000000000</double>
-    </property>
-    <property name="value">
-     <double>0.010000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelSize_2">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>670</y>
-      <width>71</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Erode size:</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="btnInitVisualizers">
     <property name="geometry">
      <rect>
@@ -284,88 +202,6 @@
     </property>
     <property name="checkable">
      <bool>true</bool>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="triRadiusSearch">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>640</y>
-      <width>66</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="decimals">
-     <number>4</number>
-    </property>
-    <property name="maximum">
-     <double>20.000000000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>0.001000000000000</double>
-    </property>
-    <property name="value">
-     <double>0.025000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelRadiusSearch">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>640</y>
-      <width>91</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Radius search:</string>
-    </property>
-   </widget>
-   <widget class="QDoubleSpinBox" name="triMaxNeighbors">
-    <property name="geometry">
-     <rect>
-      <x>420</x>
-      <y>670</y>
-      <width>66</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="decimals">
-     <number>0</number>
-    </property>
-    <property name="maximum">
-     <double>10000.000000000000000</double>
-    </property>
-    <property name="singleStep">
-     <double>10.000000000000000</double>
-    </property>
-    <property name="value">
-     <double>100.000000000000000</double>
-    </property>
-   </widget>
-   <widget class="QLabel" name="labelMaxNeighbors">
-    <property name="geometry">
-     <rect>
-      <x>320</x>
-      <y>670</y>
-      <width>91</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <weight>50</weight>
-      <bold>false</bold>
-     </font>
-    </property>
-    <property name="text">
-     <string>Max neighbors:</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnLoadPointCloud">
@@ -447,6 +283,146 @@
     <property name="checkable">
      <bool>true</bool>
     </property>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>460</y>
+      <width>95</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="labelRadiusSearch">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Radius search:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelMaxNeighbors">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Max neighbors:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelSize">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Dilate size:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelSize_2">
+       <property name="font">
+        <font>
+         <weight>50</weight>
+         <bold>false</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Erode size:</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="">
+    <property name="geometry">
+     <rect>
+      <x>470</x>
+      <y>460</y>
+      <width>83</width>
+      <height>131</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QDoubleSpinBox" name="triRadiusSearch">
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="maximum">
+        <double>20.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.001000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.025000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="triMaxNeighbors">
+       <property name="decimals">
+        <number>0</number>
+       </property>
+       <property name="maximum">
+        <double>10000.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>10.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>100.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="dilateSizeValue">
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="maximum">
+        <double>20.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.010000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.010000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="erodeSizeValue">
+       <property name="decimals">
+        <number>4</number>
+       </property>
+       <property name="maximum">
+        <double>20.000000000000000</double>
+       </property>
+       <property name="singleStep">
+        <double>0.010000000000000</double>
+       </property>
+       <property name="value">
+        <double>0.010000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
  </widget>
