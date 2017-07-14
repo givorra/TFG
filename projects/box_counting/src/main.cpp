@@ -28,29 +28,29 @@ void infoParms();
 bool checkPathExist(const string& path);
 bool isNumber(const string& number);
 bool loadPointCloud(const string& fileName, MY_POINT_CLOUD::Ptr cloud_out);
-std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCountingDirectory(const string& dir);
-std::vector<std::pair<float, float> > boxCountingFile(const string& ply_file);
-std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, string fresults);
-//void plotXYgraphDir(string filename, std::vector<std::pair<std::vector<std::pair<float, float> >, string > > xy_pts);
-void plotXYgraph(string filename, std::vector<std::pair<float, float> > xy_pts);
-void plotLinearRegression(string filename, std::vector<std::pair<float, float> > xy_pts, const float& m, const float& b);
+vector<pair<string, vector<pair<float, float> > > > boxCountingDirectory(const string& dir);
+vector<pair<float, float> > boxCountingFile(const string& ply_file);
+vector<pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, string fresults);
+//void plotXYgraphDir(string filename, vector<pair<vector<pair<float, float> >, string > > xy_pts);
+void plotXYgraph(string filename, vector<pair<float, float> > xy_pts);
+void plotLinearRegression(string filename, vector<pair<float, float> > xy_pts, const float& m, const float& b);
 string numberToString(int number);
-int linearRegression(std::vector<std::pair<float, float> > xy_pts, float& m, float& b, float& r);
-//void getBestLinearRegression(std::vector<std::pair<float, float> > xy_pts, float& best_m, float& best_b);
-void getBestRange(std::vector<std::pair<float, float> > xy_pts, int& best_range_begin, int& best_range_end);
+int linearRegression(vector<pair<float, float> > xy_pts, float& m, float& b, float& r);
+//void getBestLinearRegression(vector<pair<float, float> > xy_pts, float& best_m, float& best_b);
+void getBestRange(vector<pair<float, float> > xy_pts, int& best_range_begin, int& best_range_end);
 void cloudToOriginCoordinates(MY_POINT_TYPE min_pt, MY_POINT_CLOUD::Ptr cloud_ptr);
-void saveResults(string fresults, const std::vector<std::pair<float, float> > &xy_pts);
-std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float first_leafSize, float last_leafSize, MY_POINT_CLOUD::Ptr cloud_ptr);
-std::vector<std::pair<float, float> > getLogLogVector(std::vector<std::pair<float, float> > xy_pts);
-float errorLinearRegression(const std::vector<std::pair<float, float> > &xy_pts, const float &m, const float &b);
-float meanErrorLinearRegression(const std::vector<std::pair<float, float> > &xy_pts, const float &m, const float &b);
-std::vector<std::pair<float, float> > getBestPointsSet(std::vector<std::pair<float, float> > xy_pts);
+void saveResults(string fresults, const vector<pair<float, float> > &xy_pts);
+vector<pair<float, float> > computeBoxCounting(int iterations, float first_leafSize, float last_leafSize, MY_POINT_CLOUD::Ptr cloud_ptr);
+vector<pair<float, float> > getLogLogVector(vector<pair<float, float> > xy_pts);
+float errorLinearRegression(const vector<pair<float, float> > &xy_pts, const float &m, const float &b);
+float meanErrorLinearRegression(const vector<pair<float, float> > &xy_pts, const float &m, const float &b);
+vector<pair<float, float> > getBestPointsSet(vector<pair<float, float> > xy_pts);
 string getFileNameFromPath(string path);
-std::vector<std::pair<float, float> > deleteDuplicates(std::vector<std::pair<float, float> > xy_pts);
+vector<pair<float, float> > deleteDuplicates(vector<pair<float, float> > xy_pts);
 float meanNearestNeighbors(MY_POINT_CLOUD::Ptr cloud_ptr);
 void boxCountingSubDirectories(const string& dir);
 int getRandomInt(int min, int max);
-std::vector<std::pair<float, float> > computeRansac(std::vector<std::pair<float, float> > xy_pts, int iterations, float maxThresold, int nMinInliers);
+vector<pair<float, float> > computeRansac(vector<pair<float, float> > xy_pts, int iterations, float maxThresold, int nMinInliers);
 // </HEADERS>
 
 // <CONST>
@@ -86,13 +86,13 @@ int main (int argc, char *argv[])
 
 			if(option == optionFile)
 			{
-				std::vector<std::pair<float, float> > xy_pts = boxCountingFile(path);	
+				vector<pair<float, float> > xy_pts = boxCountingFile(path);	
 				/*float m, b, r;
 				getBestLinearRegression(xy_pts, m, b);*/
 			}
 			else if(option == optionDir)
 			{
-				std::vector<std::pair<string, std::vector<std::pair<float, float> > > > dir_results = boxCountingDirectory(path);
+				vector<pair<string, vector<pair<float, float> > > > dir_results = boxCountingDirectory(path);
 			}
 			else if(option == optionSubDir)
 			{
@@ -187,9 +187,9 @@ bool checkPathExist(const string& path)
   	return (stat (path.c_str(), &buffer) == 0); 
 }
 
-std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCountingDirectory(const string& dir)
+vector<pair<string, vector<pair<float, float> > > > boxCountingDirectory(const string& dir)
 {
-	std::vector<std::pair<string, std::vector<std::pair<float, float> > > > dir_results;
+	vector<pair<string, vector<pair<float, float> > > > dir_results;
 
 	if(checkPathExist(dir))
 	{
@@ -213,7 +213,7 @@ std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCount
 
 			while(!f.eof())
 			{
-				dir_results.push_back(std::make_pair(ply_file, boxCountingFile(ply_file)));
+				dir_results.push_back(make_pair(ply_file, boxCountingFile(ply_file)));
 				//cout << "Procesado " << ply_file << "\n";
 				getline(f, ply_file);
 			}
@@ -225,7 +225,7 @@ std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCount
 			{
 				for(int i = 0; i < dir_results.size(); i++)
 				{
-					std::vector<std::pair<float, float> > xy_log_pts = getLogLogVector(dir_results[i].second);
+					vector<pair<float, float> > xy_log_pts = getLogLogVector(dir_results[i].second);
 					linearRegression(xy_log_pts, m, b, r);
 					f << dir_results[i].first << " D = " << m << ", error = " << meanErrorLinearRegression(xy_log_pts, m, b) << "\n";
 				}
@@ -241,7 +241,7 @@ std::vector<std::pair<string, std::vector<std::pair<float, float> > > > boxCount
 
 void boxCountingSubDirectories(const string& dir)
 {
-	std::vector<std::pair<string, std::vector<std::pair<float, float> > > > result;
+	vector<pair<string, vector<pair<float, float> > > > result;
 	string tmp_sub_dirs = ".lista_dirs";		// Fichero que contiene todos los ply del directorio
 
 	// Hago una lista en un fichero con find>fich
@@ -267,12 +267,12 @@ void boxCountingSubDirectories(const string& dir)
 	result.clear();
 }
 
-std::vector<std::pair<float, float> > boxCountingFile(const string& ply_file)
+vector<pair<float, float> > boxCountingFile(const string& ply_file)
 {
 	
 
 	MY_POINT_CLOUD::Ptr tmp(new MY_POINT_CLOUD());
-	std::vector<std::pair<float, float> > cloud;
+	vector<pair<float, float> > cloud;
 
 	if(loadPointCloud(ply_file, tmp))
 	{
@@ -297,13 +297,13 @@ std::vector<std::pair<float, float> > boxCountingFile(const string& ply_file)
  * a realizar obtiene el incremento a aplicar al tamaño del voxel en cada iteracion
 */
 
-std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, string fresults)
+vector<pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr, string fresults)
 {
-	std::vector<std::pair<float, float> > xy_pts;				// Vector de Tuplas que almacena el resultado de cada iteracion del box counting
-	std::vector<std::pair<float, float> > xy_log_pts;			// Tupla que almacena ambos datos juntos
-	std::vector<std::pair<float, float> > xy_pts_without_duplicates;			// Tupla que almacena ambos datos juntos
-	std::vector<std::pair<float, float> > xy_pts_best_set;
-	std::vector<std::pair<float, float> > xy_pts_best_range;
+	vector<pair<float, float> > xy_pts;				// Vector de Tuplas que almacena el resultado de cada iteracion del box counting
+	vector<pair<float, float> > xy_log_pts;			// Tupla que almacena ambos datos juntos
+	vector<pair<float, float> > xy_pts_without_duplicates;			// Tupla que almacena ambos datos juntos
+	vector<pair<float, float> > xy_pts_best_set;
+	vector<pair<float, float> > xy_pts_best_range;
 
     MY_POINT_TYPE min_pt, max_pt;								// X Y Z max y min del voxel que engloba el objeto
 	float xSize, ySize, zSize;									// Tamaño del objeto en cada eje
@@ -344,7 +344,7 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
 
 	// Aplica RANSAC
 /*
-    std::vector<std::pair<float, float> > xy_pts_ransac;
+    vector<pair<float, float> > xy_pts_ransac;
     int ransac_iterations = 40;
     float ransac_maxThresold = meanErrorLinearRegression(xy_log_pts, m, b) * 1.8;
     int ransac_nMinInliers = xy_pts.size() * 0.9;
@@ -388,7 +388,7 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
 	/*
 	int best_range_begin, best_range_end;
 	getBestRange(xy_pts, best_range_begin, best_range_end);
-	std::vector<std::pair<float, float> > xy_pts_aux;// = xy_pts;
+	vector<pair<float, float> > xy_pts_aux;// = xy_pts;
 	//xy_pts_aux.erase(xy_pts_aux.begin() + best_range_end, xy_pts_aux.end());
 	//xy_pts_aux.erase(xy_pts_aux.begin(), xy_pts_aux.begin() + best_range_begin);
 	for(int i = best_range_begin; i <= best_range_end; i++)
@@ -412,18 +412,18 @@ std::vector<std::pair<float, float> > boxCounting(MY_POINT_CLOUD::Ptr cloud_ptr,
 	return xy_pts;
 }
 
-std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float first_leafSize, float last_leafSize, MY_POINT_CLOUD::Ptr cloud_ptr)
+vector<pair<float, float> > computeBoxCounting(int iterations, float first_leafSize, float last_leafSize, MY_POINT_CLOUD::Ptr cloud_ptr)
 {
 
 	float leafSize;
-	std::vector<std::pair<float, float> > xy_pts;
+	vector<pair<float, float> > xy_pts;
 	MY_POINT_CLOUD::Ptr cloud_filtered(new MY_POINT_CLOUD());	// Point Cloud donde se almacena la nube filtrada en cada iteracion
 	pcl::VoxelGrid<MY_POINT_TYPE> sor;							// Filtro que realiza el box counting
 
 	sor.setInputCloud(cloud_ptr);								// Set de la nube sobre la que se aplica el filtro
 
 	float meanNN = meanNearestNeighbors(cloud_ptr) * 2;
-	leafSize = std::numeric_limits<float>::max();
+	leafSize = numeric_limits<float>::max();
 
     for(float i = 2; leafSize >= meanNN; i += 0.5)							// Itera incrementando el leafsize
     {
@@ -433,12 +433,12 @@ std::vector<std::pair<float, float> > computeBoxCounting(int iterations, float f
 		sor.setLeafSize(leafSize, leafSize, leafSize);		// Leaf size en x, y, z 	*NOTA: Posibilidad de rectangulos y no cuadrados, sería factible?
 		sor.filter(*cloud_filtered);						// Aplica filtro, conserva un solo punto por cada voxel
 
-		xy_pts.push_back(std::make_pair(leafSize, cloud_filtered->size()));
+		xy_pts.push_back(make_pair(leafSize, cloud_filtered->size()));
 	}
 	return xy_pts;
 }
 
-void saveResults(string fresults, const std::vector<std::pair<float, float> > &xy_pts)
+void saveResults(string fresults, const vector<pair<float, float> > &xy_pts)
 {
   	fresults += ".out";
 	ofstream f;
@@ -467,20 +467,20 @@ void cloudToOriginCoordinates(MY_POINT_TYPE min_pt, MY_POINT_CLOUD::Ptr cloud_pt
 	}	
 }
 
-void plotXYgraph(string filename, std::vector<std::pair<float, float> > xy_pts)
+void plotXYgraph(string filename, vector<pair<float, float> > xy_pts)
 {
 	/*
 	xy_pts.clear();
-	xy_pts.push_back(std::make_pair(1, 1));
-	xy_pts.push_back(std::make_pair(1, 2));
-	xy_pts.push_back(std::make_pair(2, 2));
-	xy_pts.push_back(std::make_pair(3, 3));
-	xy_pts.push_back(std::make_pair(4, 4));
-	xy_pts.push_back(std::make_pair(5, 5));
-	xy_pts.push_back(std::make_pair(6, 6));
-	xy_pts.push_back(std::make_pair(7, 7));
-	xy_pts.push_back(std::make_pair(8, 8));
-	xy_pts.push_back(std::make_pair(2, 1));
+	xy_pts.push_back(make_pair(1, 1));
+	xy_pts.push_back(make_pair(1, 2));
+	xy_pts.push_back(make_pair(2, 2));
+	xy_pts.push_back(make_pair(3, 3));
+	xy_pts.push_back(make_pair(4, 4));
+	xy_pts.push_back(make_pair(5, 5));
+	xy_pts.push_back(make_pair(6, 6));
+	xy_pts.push_back(make_pair(7, 7));
+	xy_pts.push_back(make_pair(8, 8));
+	xy_pts.push_back(make_pair(2, 1));
 	*/
 	Gnuplot gp;
 	string format = "png";
@@ -503,7 +503,7 @@ void plotXYgraph(string filename, std::vector<std::pair<float, float> > xy_pts)
 	//cout << "title_f(a,b) = sprintf('f(x) = %2fx + %.2f', a, b)\n";
 }
 
-void plotLinearRegression(string filename, std::vector<std::pair<float, float> > xy_pts, const float& m, const float& b)
+void plotLinearRegression(string filename, vector<pair<float, float> > xy_pts, const float& m, const float& b)
 {
 	Gnuplot gp;
 	string format = "png";
@@ -525,7 +525,7 @@ void plotLinearRegression(string filename, std::vector<std::pair<float, float> >
 }
 
 
-int linearRegression(std::vector<std::pair<float, float> > xy_pts, float& m, float& b, float& r)
+int linearRegression(vector<pair<float, float> > xy_pts, float& m, float& b, float& r)
 {
 	int n = xy_pts.size();
 	float sumx=0,sumy=0,sumx2=0,sumy2=0,sumxy=0;
@@ -569,12 +569,12 @@ int linearRegression(std::vector<std::pair<float, float> > xy_pts, float& m, flo
 	return true;
 }
 
-void getBestRange(std::vector<std::pair<float, float> > xy_pts, int& best_range_begin, int& best_range_end)
+void getBestRange(vector<pair<float, float> > xy_pts, int& best_range_begin, int& best_range_end)
 {
-	std::vector<std::pair<float, float> > xy_log_pts;
+	vector<pair<float, float> > xy_log_pts;
 
 	float m = 0, b = 0, r = 0, best_r, best_b, best_m, best_error;
-	std::vector<std::pair<float, float> > xy_pts_range, best_range;
+	vector<pair<float, float> > xy_pts_range, best_range;
 	int n = xy_pts.size();
 	int range_begin = 0;
 	int range_end = n/2 - 1;	// Resta 1 porque empieza en indice 0
@@ -583,7 +583,7 @@ void getBestRange(std::vector<std::pair<float, float> > xy_pts, int& best_range_
 	best_m = 0;
 	best_b = 0;
 	best_r = 0;
-	best_error = std::numeric_limits<float>::max();
+	best_error = numeric_limits<float>::max();
 #if DEBUG_MODE == 1
 	cout << "# GET BEST RANGE LINEAR REGRESSION\n";
 	cout << " - Número de muestras = " << n << "\n";
@@ -625,15 +625,15 @@ void getBestRange(std::vector<std::pair<float, float> > xy_pts, int& best_range_
 #endif
 }
 
-std::vector<std::pair<float, float> > getBestPointsSet(std::vector<std::pair<float, float> > xy_pts)
+vector<pair<float, float> > getBestPointsSet(vector<pair<float, float> > xy_pts)
 {
-	std::vector<std::pair<float, float> > xy_log_pts;
-	std::vector<std::pair<float, float> > xy_pts_out;
+	vector<pair<float, float> > xy_log_pts;
+	vector<pair<float, float> > xy_pts_out;
 
 	const int divisorRango = 10;
 
 	float m = 0, b = 0, r = 0, epsilon;
-	std::vector<std::pair<float, float> > xy_pts_range, best_range;
+	vector<pair<float, float> > xy_pts_range, best_range;
 	int n = xy_pts.size();
 	int range_begin = 0;
 	int range_end = n/divisorRango - 1;	// Resta 1 porque empieza en indice 0
@@ -670,7 +670,7 @@ std::vector<std::pair<float, float> > getBestPointsSet(std::vector<std::pair<flo
 		{
 			for(int i = range_begin; i < range_end; i++)
 			{
-				if (std::find(xy_pts_out.begin(), xy_pts_out.end(), xy_pts[i]) == xy_pts_out.end())
+				if (find(xy_pts_out.begin(), xy_pts_out.end(), xy_pts[i]) == xy_pts_out.end())
 				{
 					xy_pts_out.push_back(xy_pts[i]);
 				}
@@ -683,9 +683,9 @@ std::vector<std::pair<float, float> > getBestPointsSet(std::vector<std::pair<flo
 	return xy_pts_out;
 }
 
-std::vector<std::pair<float, float> > deleteDuplicates(std::vector<std::pair<float, float> > xy_pts)
+vector<pair<float, float> > deleteDuplicates(vector<pair<float, float> > xy_pts)
 {
-	std::vector<std::pair<float, float> > xy_pts_out;
+	vector<pair<float, float> > xy_pts_out;
 	bool repeated;
 
 	for(int i = 0; i < xy_pts.size(); i++)
@@ -707,31 +707,29 @@ std::vector<std::pair<float, float> > deleteDuplicates(std::vector<std::pair<flo
 	return xy_pts_out;
 }
 
-float meanErrorLinearRegression(const std::vector<std::pair<float, float> > &xy_pts, const float &m, const float &b)
+float meanErrorLinearRegression(const vector<pair<float, float> > &xy_pts, const float &m, const float &b)
 {
 	return errorLinearRegression(xy_pts, m, b) / xy_pts.size();
 }
 
-float errorLinearRegression(const std::vector<std::pair<float, float> > &xy_pts, const float &m, const float &b)
+float errorLinearRegression(const vector<pair<float, float> > &xy_pts, const float &m, const float &b)
 {
 	float error = 0;
 	// Calcula el sumatorio de la distancia de cada punto a la recta de regresion
 	for(int i = 0; i < xy_pts.size(); i++)
 	{
 		error += abs(xy_pts[i].second - (m*xy_pts[i].first+b));
-		//cout << "Original y = " << xy_pts[i].second << ", Calculada y = " << m*xy_pts[i].first+b 
-		//	<< ", Diferencia " << abs(xy_pts[i].second - (m*xy_pts[i].first+b)) << ", Error = " << error << "\n";
 	}
 	return error;
 }
 
-std::vector<std::pair<float, float> > getLogLogVector(std::vector<std::pair<float, float> > xy_pts)
+vector<pair<float, float> > getLogLogVector(vector<pair<float, float> > xy_pts)
 {
-	std::vector<std::pair<float, float> > xy_log_pts;
+	vector<pair<float, float> > xy_log_pts;
 	// Obtenemos los puntos log log
 	for(int i = 0; i < xy_pts.size(); i++)
 	{
-		xy_log_pts.push_back(std::make_pair(log(1/xy_pts[i].first), log(xy_pts[i].second)));
+		xy_log_pts.push_back(make_pair(log(1/xy_pts[i].first), log(xy_pts[i].second)));
 		//cout << "# xy_pts[i].first = " << xy_pts[i].first << ", xy_pts[i].second " << xy_pts[i].second << "\n";
 		//cout << "# xy_log_pts[i].first = " << xy_log_pts[i].first << ", xy_log_pts[i].second " << xy_log_pts[i].second << "\n";
 	}
@@ -768,8 +766,8 @@ float meanNearestNeighbors(MY_POINT_CLOUD::Ptr cloud_ptr)
 	int K = 2;
     pcl::KdTreeFLANN<MY_POINT_TYPE> kdtree;
     kdtree.setInputCloud(cloud_ptr);
-	std::vector<int> pointIdxNKNSearch(K);
-    std::vector<float> pointNKNSquaredDistance(K);
+	vector<int> pointIdxNKNSearch(K);
+    vector<float> pointNKNSquaredDistance(K);
     float mean = 0;
     for(int i = 0; i < cloud_ptr->points.size(); i++)
     {
@@ -779,10 +777,10 @@ float meanNearestNeighbors(MY_POINT_CLOUD::Ptr cloud_ptr)
         	mean += sqrt(pointNKNSquaredDistance[1]);
 			/*
 	        for (size_t j = 0; j < pointIdxNKNSearch.size (); j++)
-	     		std::cout << "    "  <<   cloud_ptr->points[ pointIdxNKNSearch[j] ].x 
+	     		cout << "    "  <<   cloud_ptr->points[ pointIdxNKNSearch[j] ].x 
 	                << " " << cloud_ptr->points[ pointIdxNKNSearch[j] ].y 
 	                << " " << cloud_ptr->points[ pointIdxNKNSearch[j] ].z 
-	                << " (squared distance: " << pointIdxNKNSearch[j] << " " << pointNKNSquaredDistance[j] << ")" << std::endl;
+	                << " (squared distance: " << pointIdxNKNSearch[j] << " " << pointNKNSquaredDistance[j] << ")" << endl;
 	                */
         }
 	}
@@ -797,7 +795,7 @@ float meanNearestNeighbors(MY_POINT_CLOUD::Ptr cloud_ptr)
 
 
 
-std::vector<std::pair<float, float> > computeRansac(std::vector<std::pair<float, float> > xy_pts, int iterations, float maxThresold, int nMinInliers)
+vector<pair<float, float> > computeRansac(vector<pair<float, float> > xy_pts, int iterations, float maxThresold, int nMinInliers)
 {
 
 #if DEBUG_MODE == 1
@@ -808,8 +806,8 @@ std::vector<std::pair<float, float> > computeRansac(std::vector<std::pair<float,
 	int i = 0;
 	int xy_pts_size = xy_pts.size();
 
-	std::vector<std::pair<float, float> > out_xy_pts, best_xy_pts;
-	best_error = std::numeric_limits<float>::max();
+	vector<pair<float, float> > out_xy_pts, best_xy_pts;
+	best_error = numeric_limits<float>::max();
 
 	t_maxThresold = maxThresold;
 
