@@ -90,6 +90,17 @@ BoxCounting boxCountingFile(const string& pFileName)
 		if(succes)
 			bc.plotLinearRegression(fresults);
 
+// SE PODRIA APLICAR RANSAC
+		/*
+		vector<pair<float, float> > ransacXYPts = bc.applyRansac(50, bc.getErrorLinearRegression() * 2, bc.getXYLogPts().size() * 0.9);
+		if(ransacXYPts.size() > 0)
+		{
+			LinearRegression lr;
+			lr.setXYPts(ransacXYPts);
+			lr.compute();
+			lr.plot(fresults + "_ransac");			
+		}
+*/
 		// Lineas de debug
 		#if DEBUG_MODE == 1
 			cout << "\n"

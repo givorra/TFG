@@ -7,6 +7,15 @@ BoxCounting::BoxCounting()
 	_incrementBoxCountingSizeDivisor = 0.5;
 }
 
+vector<pair<float, float> > BoxCounting::applyRansac(int pIterations, float pMaxThresold, int pMinInliers)
+{
+	Ransac ransac(pIterations, pMaxThresold, pMinInliers);
+	ransac.setInputXYPts(_xyLogPts);
+	ransac.compute();
+
+	return ransac.getOutputXYPts();
+}
+
 bool BoxCounting::compute()
 {
     MY_POINT_TYPE min_pt, max_pt;								// X Y Z max y min de la nube
@@ -161,6 +170,16 @@ float BoxCounting::getErrorLinearRegression()
 int BoxCounting::getMaxIterations()
 {
 	return _maxIterations;
+}
+
+vector<pair<float, float> > BoxCounting::getXYPts()
+{
+	return _xyPts;
+}
+
+vector<pair<float, float> > BoxCounting::getXYLogPts()
+{
+	return _xyLogPts;
 }
 
 // **************************  Setters

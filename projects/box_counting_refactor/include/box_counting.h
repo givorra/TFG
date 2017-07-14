@@ -3,6 +3,7 @@
 // Librerias propias
 #include "util.h"
 #include "linear_regression.h"
+#include "ransac.h"
 
 // Librerias PCL
 #include <pcl/filters/voxel_grid.h>
@@ -37,6 +38,7 @@ public:
 	BoxCounting();
 
 	bool compute();
+	vector<pair<float, float> > applyRansac(int pIterations, float pMaxThresold, int pMinInliers);
 	void plotLinearRegression(string pFileName);
 
 	// Getters
@@ -46,6 +48,8 @@ public:
 	MY_POINT_CLOUD::Ptr getInputCloud();
 	float getErrorLinearRegression();
 	int getMaxIterations();
+	vector<pair<float, float> > getXYPts();
+	vector<pair<float, float> > getXYLogPts();
 
 	// Setters
 	void setBoxCountingInitialSizeDivisor(const float& pBoxCountingInitialSizeDivisor);
